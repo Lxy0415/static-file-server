@@ -109,6 +109,16 @@ func IgnoreIndex(serve http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
+func CorsHeader(serve http.HandlerFunc) http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Access-Control-Allow-Origin", "*")
+		//writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		writer.Header().Set("Access-Control-Allow-Headers", "range")
+		//writer.Header().Set("Access-Control-Allow-Method", "GET")
+		serve(writer, request)
+	}
+}
+
 // Listening function for serving the handler function.
 func Listening() ListenerFunc {
 	return func(binding string, handler http.HandlerFunc) error {
